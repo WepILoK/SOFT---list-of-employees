@@ -17,3 +17,17 @@ export enum ERole {
     "waiter" = "Писатель",
     "cook" = "Повар"
 }
+
+export interface IFilterValues {
+    role: ERole | string
+    isArchive: boolean
+}
+
+export enum ESortType {
+    "name" = "По имени",
+    "birthday" = "По дате рожения",
+}
+export interface ISortValues {
+    type: ESortType | string
+    order: "ASC" | "DESC"
+}

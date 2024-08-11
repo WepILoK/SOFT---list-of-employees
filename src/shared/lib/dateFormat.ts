@@ -1,0 +1,1 @@
+export const dateFormat = (text: string) => text.split(".").reverse().join("-")

@@ -77,8 +77,7 @@
   .listLayout {
     overflow: auto;
     margin-top: 12px;
-    max-height: 850px;
-
+    height: calc(100vh - 80px);
     .list {
       .item {
         &:hover {
@@ -86,6 +85,12 @@
           background-color: #e7e7e7;
         }
       }
+    }
+  }
+  @media (max-width: 1020px) {
+    .listLayout {
+      height: calc(100vh - 280px);
+
     }
   }
 }

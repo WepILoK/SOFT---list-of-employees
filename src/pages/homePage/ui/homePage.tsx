@@ -1,9 +1,15 @@
 import {
     Avatar,
-    Box, Button,
-    Checkbox, Divider,
+    Box,
+    Button,
+    Checkbox,
+    Divider,
     FormControlLabel,
-    IconButton, List, ListItem, ListItemAvatar, ListItemText,
+    IconButton,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
     MenuItem,
     Select,
     SelectChangeEvent,
@@ -11,8 +17,16 @@ import {
 } from "@mui/material";
 import styles from "./homePage.module.scss"
 import React, {useEffect, useState} from "react";
-import {useAppDispatch, useAppSelector} from "../../../shared/lib/store";
-import {selectIEmployees, ERole, getEmployeesData, getFilteredEmployeesData} from "../../../entities/employee";
+import {useAppDispatch, useAppSelector} from "../../../shared/lib/redux.ts";
+import {
+    ERole,
+    ESortType,
+    getEmployeesData,
+    getFilteredEmployeesData, getSortedEmployeesData,
+    IFilterValues,
+    ISortValues,
+    selectIEmployees
+} from "../../../entities/employee";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import {Link, useNavigate} from "react-router-dom";
@@ -21,37 +35,55 @@ export const HomePage = () => {
     const data = useAppSelector(selectIEmployees)
     const dispatch = useAppDispatch()
     const navigate = useNavigate();
-    const [filterValues, setFilterValues] = useState({
+    const [filterValues, setFilterValues] = useState<IFilterValues>({
         role: "",
         isArchive: false
     })
-    const [sortSettings, setSortSettings] = useState({
-        key: "",
+    const [sortValues, setSortValues] = useState<ISortValues>({
+        type: "",
         order: "ASC"
     })
 
-    const handleFilterChange = (event: SelectChangeEvent<ERole>) => {
-        dispatch(getFilteredEmployeesData(
-            {...filterValues, role: event.target.value}
-        ))
+    const handleFilterRoleChange = (event: SelectChangeEvent<ERole>) => {
+        dispatch(getFilteredEmployeesData({
+            ...filterValues,
+            role: event.target.value as ERole
+        }))
         setFilterValues(prevState => ({
             ...prevState,
-            role: event.target.value
+            role: event.target.value as ERole
         }));
     }
 
-    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch(getFilteredEmployeesData())
+    const handleFilterCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch(getFilteredEmployeesData({
+            ...filterValues,
+            isArchive: event.target.checked
+        }))
         setFilterValues(prevState => ({
             ...prevState,
             isArchive: event.target.checked
         }));
     }
 
-    const handleSortKeyChange = (event: SelectChangeEvent<ERole>) => {
-        setSortSettings(prevState => ({
+    const handleSortTypeChange = (event: SelectChangeEvent<ESortType>) => {
+        dispatch(getSortedEmployeesData({
+            ...sortValues,
+            type: event.target.value as ESortType
+        }))
+        setSortValues(prevState => ({
             ...prevState,
-            key: event.target.value
+            type: event.target.value as ESortType
+        }));
+    }
+    const handleSortOrderChange = () => {
+        dispatch(getSortedEmployeesData({
+            ...sortValues,
+            order: sortValues.order === "ASC" ? "DESC" : "ASC"
+        }))
+        setSortValues(prevState => ({
+            ...prevState,
+            order: prevState.order === "ASC" ? "DESC" : "ASC"
         }));
     }
 
@@ -74,7 +106,7 @@ export const HomePage = () => {
                         size="small"
                         value={filterValues.role}
                         displayEmpty
-                        onChange={handleFilterChange}
+                        onChange={handleFilterRoleChange}
                     >
                         <MenuItem value={""}>Все</MenuItem>
                         {Object.keys(ERole).map((item) => <MenuItem key={item} value={item}>{ERole[item]}</MenuItem>)}
@@ -84,7 +116,7 @@ export const HomePage = () => {
                             <Checkbox
                                 className={styles.checkbox}
                                 checked={filterValues.isArchive}
-                                onChange={handleCheckboxChange}/>
+                                onChange={handleFilterCheckboxChange}/>
                         }
                         label="В архиве"
                     />
@@ -102,23 +134,17 @@ export const HomePage = () => {
                         <Select
                             size="small"
                             fullWidth
-                            value={sortSettings.key}
+                            value={sortValues.type}
                             displayEmpty
-                            onChange={handleSortKeyChange}
+                            onChange={handleSortTypeChange}
                         >
-                            <MenuItem value={""}>Все</MenuItem>
-                            <MenuItem value={"name"}>По имени</MenuItem>
-                            <MenuItem value={"birthday"}>По дате рожения</MenuItem>
+                            <MenuItem value={""}>Выкл</MenuItem>
+                            {Object.keys(ESortType).map((item) => <MenuItem key={item} value={item}>{ESortType[item]}</MenuItem>)}
                         </Select>
                         <IconButton
-                            onClick={() => {
-                                setSortSettings(prevState => ({
-                                    ...prevState,
-                                    order: prevState.order === "ASC" ? "DESC" : "ASC"
-                                }));
-                            }}
+                            onClick={handleSortOrderChange}
                         >
-                            {sortSettings.order === "ASC"
+                            {sortValues.order === "ASC"
                                 ? <ArrowDownwardIcon/>
                                 : <ArrowUpwardIcon/>
                             }
