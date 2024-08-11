@@ -1,6 +1,7 @@
 
 export interface IEmployeeState {
     employees: IEmployee[]
+    backup: IEmployee[]
 }
 
 export interface IEmployee {

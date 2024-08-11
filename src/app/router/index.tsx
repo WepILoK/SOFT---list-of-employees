@@ -4,7 +4,7 @@ import {HomePage} from "../../pages/homePage";
 
 export const router = createBrowserRouter([
     {
-        path: "/soft/",
+        path: "/soft-list-of-employees/",
         element: <Layout/>,
         children: [
             {
@@ -12,7 +12,7 @@ export const router = createBrowserRouter([
                 element: <HomePage/>
             },
             {
-                path: "/soft/:id",
+                path: "/soft-list-of-employees/:id",
                 element: <>fwaffwaf</>
             }
         ]

@@ -4,7 +4,8 @@ import {IEmployee, IEmployeeState, IFilterValues, ISortValues} from "./types.ts"
 import {dateFormat} from "../../../shared/lib/dateFormat.ts";
 
 const initialState: IEmployeeState = {
-    employees: []
+    employees: [],
+    backup: []
 }
 
 const employeeSlice = createSlice({
@@ -32,7 +33,7 @@ const employeeSlice = createSlice({
         },
         getSortedEmployeesData: (state, action: PayloadAction<ISortValues>) => {
             const {type, order} = action.payload
-            let newData = [...fakeData]
+            let newData = state.employees
             if (type === "name") {
                 if (order === "ASC") {
                     newData.sort((a, b) => a.name.localeCompare(b.name))

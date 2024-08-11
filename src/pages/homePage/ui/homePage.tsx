@@ -168,7 +168,7 @@ export const HomePage = () => {
                                 <ListItem
                                     className={styles.item}
                                     onClick={() => {
-                                        navigate(`/soft/${item.id}`)
+                                        navigate(`/soft-list-of-employees/${item.id}`)
                                     }}
                                 >
                                     <ListItemAvatar>
