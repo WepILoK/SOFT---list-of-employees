@@ -1,11 +1,10 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import fakeData from './employees.json'
-import {IEmployee, IEmployeeState, IFilterValues, ISortValues} from "./types.ts";
+import {IEmployee, IEmployeeState, IToolBarValues} from "./types.ts";
 import {dateFormat} from "../../../shared/lib/dateFormat.ts";
 
 const initialState: IEmployeeState = {
     employees: [],
-    backup: []
 }
 
 const employeeSlice = createSlice({
@@ -21,19 +20,15 @@ const employeeSlice = createSlice({
         updateEmployee: (state, action: PayloadAction<IEmployee>) => {
             state.employees = state.employees.map(item => {
                 if (item.id === action.payload.id) {
-                    return action.payload
+                    return {...action.payload}
                 } else return item
             })
         },
-        getFilteredEmployeesData: (state, action: PayloadAction<IFilterValues>) => {
-            const {role, isArchive} = action.payload
-            state.employees = fakeData
+        getSortedAndFilteredEmployeesData: (state, action: PayloadAction<IToolBarValues>) => {
+            const {type, order, isArchive, role} = action.payload
+            let newData = [...fakeData]
                 .filter(item => (role ? item.role === role : true))
                 .filter(item => (isArchive ? item.isArchive : true))
-        },
-        getSortedEmployeesData: (state, action: PayloadAction<ISortValues>) => {
-            const {type, order} = action.payload
-            let newData = state.employees
             if (type === "name") {
                 if (order === "ASC") {
                     newData.sort((a, b) => a.name.localeCompare(b.name))
@@ -47,9 +42,8 @@ const employeeSlice = createSlice({
                     newData.sort((a, b) => new Date(dateFormat(a.birthday)) - new Date(dateFormat(b.birthday)))
                         .reverse()
                 }
-            } else {
-                newData = fakeData
             }
+
             state.employees = newData
         },
     },
@@ -62,6 +56,5 @@ export const {
     getEmployeesData,
     addEmployee,
     updateEmployee,
-    getFilteredEmployeesData,
-    getSortedEmployeesData,
+    getSortedAndFilteredEmployeesData,
 } = employeeSlice.actions

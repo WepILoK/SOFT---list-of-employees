@@ -1,7 +1,5 @@
-
 export interface IEmployeeState {
     employees: IEmployee[]
-    backup: IEmployee[]
 }
 
 export interface IEmployee {
@@ -19,16 +17,14 @@ export enum ERole {
     "cook" = "Повар"
 }
 
-export interface IFilterValues {
-    role: ERole | string
-    isArchive: boolean
-}
-
 export enum ESortType {
     "name" = "По имени",
     "birthday" = "По дате рожения",
 }
-export interface ISortValues {
+
+export interface IToolBarValues {
+    role: ERole | string
+    isArchive: boolean
     type: ESortType | string
     order: "ASC" | "DESC"
 }

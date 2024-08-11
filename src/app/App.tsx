@@ -6,6 +6,7 @@ import {Provider} from "react-redux";
 
 export const App = () => {
 
+
     return (
         <div className={styles.app}>
             <Provider store={store}>
