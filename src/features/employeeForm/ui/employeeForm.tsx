@@ -33,8 +33,11 @@ export const EmployeeForm: React.FC<IEmployeeForm> = ({employeeItem, onSubmit}) 
             ? employeeItem
             : {
                 id: Date.now(),
+                name: "",
                 isArchive: false,
-                role: "cook"
+                phone: "",
+                role: "cook",
+                birthday: "",
             }
     })
 

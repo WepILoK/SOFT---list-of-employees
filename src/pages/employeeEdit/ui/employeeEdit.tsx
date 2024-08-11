@@ -1,11 +1,10 @@
-import {Alert, Box, Button, Snackbar, SnackbarCloseReason} from "@mui/material";
+import {Box, Button} from "@mui/material";
 import {EmployeeForm} from "../../../features/employeeForm";
 import {GoBackButton} from "../../../shared/ui/goBackButton";
 import {useAppDispatch, useAppSelector} from "../../../shared/lib/redux.ts";
 import {selectIEmployees, updateEmployee} from "../../../entities/employee";
 import {useParams} from "react-router-dom";
 import styles from "./employeeEdit.module.scss"
-import {SyntheticEvent, useState} from "react";
 
 export const EmployeeEdit = () => {
     const { id } = useParams()

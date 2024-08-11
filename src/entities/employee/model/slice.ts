@@ -15,7 +15,7 @@ const employeeSlice = createSlice({
             state.employees = fakeData
         },
         addEmployee: (state, action: PayloadAction<IEmployee>) => {
-            state.employees = [action.payload, ...state.employees]
+            state.employees = [{...action.payload}, ...state.employees]
         },
         updateEmployee: (state, action: PayloadAction<IEmployee>) => {
             state.employees = state.employees.map(item => {
