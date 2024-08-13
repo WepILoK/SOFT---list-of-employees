@@ -74,6 +74,15 @@ export const ToolBar = () => {
         }));
     }
 
+    const leavePage = () => {
+        dispatch(getSortedAndFilteredEmployeesData({
+            role: "",
+            isArchive: false,
+            type: "",
+            order: "ASC"
+        }))
+    }
+
     return (
         <Box className={styles.toolBar}>
             <Box className={styles.filter}>
@@ -147,7 +156,9 @@ export const ToolBar = () => {
                 </Box>
             </Box>
             <Box className={styles.addButton}>
-                <Link to={"/soft-list-of-employees/add"}>
+                <Link to={"/soft-list-of-employees/add"}
+                      onClick={leavePage}
+                >
                     <Button variant="contained">
                         Добавить сотрудника
                     </Button>

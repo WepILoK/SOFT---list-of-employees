@@ -10,9 +10,9 @@ import {
 } from "@mui/material";
 import styles from "./homePage.module.scss"
 import React from "react";
-import {useAppSelector} from "../../../shared/lib/redux.ts";
+import {useAppDispatch, useAppSelector} from "../../../shared/lib/redux.ts";
 import {
-    ERole,
+    ERole, getSortedAndFilteredEmployeesData,
     selectIEmployees
 } from "../../../entities/employee";
 import {useNavigate} from "react-router-dom";
@@ -21,7 +21,17 @@ import {ToolBar} from "../../../features/toolBar";
 export const HomePage = () => {
     const data = useAppSelector(selectIEmployees)
     const navigate = useNavigate();
+    const dispatch = useAppDispatch()
 
+    const leavePage = (id: number) => {
+        navigate(`/soft-list-of-employees/${id}`)
+        dispatch(getSortedAndFilteredEmployeesData({
+            role: "",
+            isArchive: false,
+            type: "",
+            order: "ASC"
+        }))
+    }
     return (
         <Box className={styles.homePage}>
             <ToolBar/>
@@ -33,7 +43,7 @@ export const HomePage = () => {
                                 <ListItem
                                     className={styles.item}
                                     onClick={() => {
-                                        navigate(`/soft-list-of-employees/${item.id}`)
+                                        leavePage(item.id)
                                     }}
                                 >
                                     <ListItemAvatar>

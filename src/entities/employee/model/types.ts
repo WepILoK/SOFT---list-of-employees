@@ -1,5 +1,6 @@
 export interface IEmployeeState {
     employees: IEmployee[]
+    copy: IEmployee[]
 }
 
 export interface IEmployee {
